@@ -718,6 +718,11 @@ class TestHash < Test::Unit::TestCase
     h.replace(@cls[].compare_by_identity)
     assert_predicate(h, :compare_by_identity?)
   end
+  
+  def test_chomp
+    h = @cls[ 1 => nil, 3 => 4 ]
+    assert_equal( h.chomp, { 3 => 4 } )
+  end
 
   def test_shift
     h = @h.dup

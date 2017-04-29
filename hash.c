@@ -1325,6 +1325,25 @@ rb_hash_reject(VALUE hash)
     return result;
 }
 
+static int
+chomp_i(VALUE key, VALUE value, VALUE result)
+{
+    if(value != Qnil){
+	    rb_hash_aset(result, key, value);
+    }
+    return ST_CONTINUE;
+}
+
+VALUE
+rb_hash_chomp(VALUE hash){
+  VALUE result;
+  result = rb_hash_new();
+  if (!RHASH_EMPTY_P(hash)) {
+	  rb_hash_foreach(hash, chomp_i, result);
+  }
+  return result;
+}
+
 /*
  * call-seq:
  *   hsh.values_at(key, ...)   -> array
@@ -4486,6 +4505,7 @@ Init_Hash(void)
     rb_define_method(rb_cHash, "select!", rb_hash_select_bang, 0);
     rb_define_method(rb_cHash, "reject", rb_hash_reject, 0);
     rb_define_method(rb_cHash, "reject!", rb_hash_reject_bang, 0);
+    rb_define_method(rb_cHash, "chomp", rb_hash_chomp, 0);
     rb_define_method(rb_cHash, "clear", rb_hash_clear, 0);
     rb_define_method(rb_cHash, "invert", rb_hash_invert, 0);
     rb_define_method(rb_cHash, "update", rb_hash_update, 1);
